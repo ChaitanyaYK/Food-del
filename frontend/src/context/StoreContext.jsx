@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState, useEffect } from "react";
+import { food_list } from "../assets/assets";
 
 
 export const StoreContext = createContext(null);
@@ -9,7 +10,7 @@ const StoreContextProvider = (props) => {
     const [cartItems, setCartItem] = useState({});
     const url = "http://localhost:5000"
     const [token,setToken] = useState("")
-    const [food_list,setFoodList] = useState([])
+    const [foodlist,setFoodList] = useState([])
 
     const addToCart = async (itemId) => {
         if (!cartItems[itemId]) {
