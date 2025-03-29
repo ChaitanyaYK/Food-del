@@ -9,7 +9,8 @@ import { ToastContainer } from 'react-toastify';
 
 const App = () => {
 
-  const url = "http://localhost:5000"
+  const port = process.env.PORT || 5000
+  const url = `http://localhost:${port}`
 
   return (
     <div>

@@ -14,4 +14,5 @@ export const assets ={
     parcel_icon
 }
 
-export const url = 'http://localhost:4000'
+const port = process.env.PORT || 5000
+export const url = `http://localhost:${port}`
