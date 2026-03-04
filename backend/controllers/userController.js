@@ -17,7 +17,8 @@ const loginUser = async (req , res) => {
         const isMatch = await bcrypt.compare(password,user.password);
 
         if (!isMatch) {
-            return res.json({success:false,message:"Invaild creadentials"})
+            return res.json({ success: false, message: "Invalid credentials" });
+
         }
 
         const token = createToken(user._id);
@@ -45,7 +46,8 @@ const registerUser = async (req, res) => {
 
         // validating email format & strong password
         if (!validator.isEmail(email)) {
-            return res.json({success:false,message:"Please enter a vaild email"})
+            return res.json({ success: false, message: "Please enter a valid email" });
+
         }
 
         if(password.length<8){

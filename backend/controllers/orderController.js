@@ -10,6 +10,9 @@ const placeOrder = async (req, res) => {
     const frontend_url = "http://localhost:5173";
 
     try {
+        if (!req.body.userId || !req.body.items || !req.body.amount || !req.body.address) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
         const newOrder = new orderModel({
             userId: req.body.userId,
             items: req.body.items,
@@ -51,8 +54,12 @@ const placeOrder = async (req, res) => {
         res.json({ success: true, session_url: session.url })
 
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
+        // console.log(error);
+        console.error("placeOrder error:", error)
+        
+        // res.json({ success: false, message: "Error" })
+        res.status(500).json({ success: false, message: error.message })
+
     }
 }
 
@@ -68,7 +75,9 @@ const verifyOrder = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.json({success: false,message:"Error"})
+        // res.json({success: false,message:"Error"})
+        res.status(500).json({ success: false, message: error.message })
+
     }
 }
 
@@ -79,7 +88,9 @@ const userOrders = async (req, res) => {
         res.json({success:true,data:orders})
     } catch (error) {
         console.log(error);
-        res.json({success:false,message:"Error"})
+        // res.json({success:false,message:"Error"})
+        res.status(500).json({ success: false, message: error.message })
+
     }
 }
 
@@ -90,18 +101,22 @@ const listOrders = async (req,res) => {
         res.json({success:true,data:orders})
     } catch (error) {
         console.log(error);
-        res.json({success:false,message:"Error"})
+        // res.json({success:false,message:"Error"})
+        res.status(500).json({ success: false, message: error.message })
+
     }
 }
 
 // api for updating order status
 const updateStatus = async (req ,res) => {
     try {
-        const status = await orderModel.findByIdAndUpdate(req.body.userId,{status:req.body.status})
+        const status = await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
         res.json({success:true, message:"Status Updated"})
     } catch (error) {
         console.log(error);
-        res.json({success:false,message:"Error"})
+        // res.json({success:false,message:"Error"})
+        res.status(500).json({ success: false, message: error.message })
+
     }
 }
 

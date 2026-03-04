@@ -14,7 +14,22 @@ const port = process.env.PORT || 5000;
 
 // middleware
 app.use(express.json())
-app.use(cors())
+
+//CORS setting
+const allowOrigins = [
+    process.env.FRONTEND_SERVER_URL,
+    "http://localhost:5173"
+]
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true
+}));
 
 // db connection
 connectDB();
@@ -30,6 +45,11 @@ app.use("/api/order",orderRouter)
 app.get("/", (req, res)=>{
     res.send("API Working")
 })
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+});
 
 app.listen(port,()=>{
     console.log(`Server Started on http://localhost:${port}`)
