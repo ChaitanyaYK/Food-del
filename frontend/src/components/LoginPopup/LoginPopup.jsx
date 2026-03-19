@@ -3,11 +3,12 @@ import './LoginPopup.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from "axios"
+import { api } from '../../api'
 
 
 const LoginPopup = ({setShowLogin}) => {
 
-    const {url, setToken} = useContext(StoreContext)
+    const {backendUrl, setToken} = useContext(StoreContext)
 
     const [currState, setCurrState] = useState("Login");
     const [data,setData] = useState({
@@ -19,22 +20,19 @@ const LoginPopup = ({setShowLogin}) => {
     const onChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        setData(data=>({...data,[name]:value}))
+        setData(data=>({...data, [name]:value}))
     }
 
     const onLogin = async (event) => {
         event.preventDefault()
-        let newUrl = url;
-        if (currState==="Login") {
-            newUrl += "/api/user/login"
-        }
-        else{
-            newUrl += "/api/user/register"
-        }
+        let endpoint = currState === "Login"
+            ? "/api/user/login"
+            : "/api/user/register";
 
 
         try {
-            const response = await axios.post(newUrl, data);
+            console.log("ENV VALUE:", import.meta.env.VITE_API_URL);
+            const response = await api.post(endpoint, data);
             if (response.data.success) {
                 setToken(response.data.token);
                 localStorage.setItem("token", response.data.token);
@@ -44,7 +42,7 @@ const LoginPopup = ({setShowLogin}) => {
             }
         } catch (error) {
             console.error("Login/Registration error:", error);
-            alert("An error occurred. Please try again later.");
+            alert(error.response?.data?.message || "An error occurred. Please try again later.");
         }
     }
 
@@ -59,7 +57,7 @@ const LoginPopup = ({setShowLogin}) => {
                     {currState === "Login"?<></>:<input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Your name' required />}
                     <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Your email' required />
                     <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Your password' required />
-                </div>+
+                </div>
                 <button type='submit'>{currState==="Sign Up"?"Create account":"Login"}</button>
                 <div className="login-popup-condition">
                     <input type="checkbox" required />

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useState, useEffect } from "react";
-
+import { api } from "../api";
 
 
 export const StoreContext = createContext(null);
@@ -8,10 +8,11 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
 
     const [cartItems, setCartItem] = useState({});
-    const url = "http://localhost:5000"
-    const [token,setToken] = useState("")
-    const [food_list,setFoodList] = useState([])
+    const [token,setToken] = useState("");
+    const [foodlist,setFoodList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const backendUrl = import.meta.env.VITE_API_URL;
 
     const addToCart = async (itemId) => {
         if (!cartItems[itemId]) {
@@ -21,14 +22,14 @@ const StoreContextProvider = (props) => {
             setCartItem((prev)=>({...prev, [itemId]: prev[itemId]+1}))
         }
         if (token) {
-            await axios.post(url+"/api/cart/add",{itemId}, {headers:{token}})
+            await api.post("/api/cart/add",{itemId}, {headers:{token}})
         }
     }
 
     const removeFromCart = async (itemId) => {
         setCartItem((prev) => ({...prev, [itemId]: prev[itemId]-1}));
         if (token) {
-            await axios.post(url+"/api/cart/remove",{itemId},{headers:{token}})
+            await api.post("/api/cart/remove",{itemId},{headers:{token}})
         }
     }
 
@@ -46,12 +47,12 @@ const StoreContextProvider = (props) => {
 
 
     const fetchFoodList = async () => {
-        const response = await axios.get(url+"/api/food/list");
-        setFoodList(response.data.data)
+        const response = await api.get("/api/food/list");
+        setFoodList(response.data.data);
     }
 
     const loadCartData = async (token) => {
-        const response = await axios.post(url+"/api/cart/get",{},{headers:{token}});
+        const response = await api.post("/api/cart/get",{},{headers:{token}});
         setCartItem(response.data.cartData);
     }
 
@@ -80,15 +81,15 @@ const StoreContextProvider = (props) => {
     //   }, []);
 
     const contextValue = {
-        food_list,
+        foodlist,
         cartItems,
         setCartItem,
         addToCart,
         removeFromCart,
         getTotalCartAmount,
-        url,
         token,
-        setToken
+        setToken,
+        backendUrl
     }
 
     return (

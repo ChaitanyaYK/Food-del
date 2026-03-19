@@ -6,14 +6,15 @@ import FoodItem from '../FoodItem/FoodItem'
 
 const FoodDisplay = ({ category }) => {
 
-  const { food_list } = useContext(StoreContext)
+  const { foodlist, backendUrl } = useContext(StoreContext)
 
   return (
     <div className='food-display' id='food-display'>
       <h2>Top dishes near you</h2>
       <div className="food-display-list">
-
-        {food_list
+        {console.log(foodlist)
+        }
+        {foodlist
           .filter(item => category === "All" || item.category === category)
           .map((item, index) => (
             <FoodItem
@@ -22,9 +23,10 @@ const FoodDisplay = ({ category }) => {
               name={item.name}
               description={item.description}
               price={item.price}
-              image={item.image}
+              image={`${backendUrl}/images/${item.image}`}
             />
-          ))}
+          ))
+        }
 
       </div>
     </div>

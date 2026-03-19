@@ -3,10 +3,11 @@ import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { api } from '../../api'
 
 const PlaceOrder = () => {
 
-  const { getTotalCartAmount, token, foodlist, cartItems, url } = useContext(StoreContext)
+  const { getTotalCartAmount, token, foodlist, cartItems } = useContext(StoreContext)
 
   const [data, setData] = useState({
     firstName: "",
@@ -41,7 +42,7 @@ const PlaceOrder = () => {
       items: orderItems,
       amount: getTotalCartAmount()+2,
     }
-    let response = await axios.post(url+"/api/order/place",orderDate,{headers:{token}});
+    let response = await api.post("/api/order/place",orderDate,{headers:{token}});
     if (response.data.success) {
       const {session_url} = response.data;
       window.location.replace(session_url);
@@ -55,9 +56,9 @@ const PlaceOrder = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate('/cart')
+      navigate('/cart');
     } else if (getTotalCartAmount()===0) {
-      navigate('/cart')
+      navigate('/cart');
     }
   }, [token])
 

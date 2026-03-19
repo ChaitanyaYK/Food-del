@@ -6,13 +6,12 @@ import { assets } from '../../assets/assets';
 
 const MyOrders = () => {
 
-    const {url,token} = useContext(StoreContext);
+    const {token} = useContext(StoreContext);
     const [data,setData] = useState([]);
 
     const fetchOrders = async () => {
-        const response = await axios.post(url+"/api/order/userorders",{},{headers:{token}});
-        setData(response.data.data);
-        
+        const response = await api.post("/api/order/userorders",{},{headers:{token}});
+        setData(response.data.data); 
     }
 
     useEffect(() => {

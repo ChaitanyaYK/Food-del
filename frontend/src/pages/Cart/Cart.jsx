@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Cart = () => {
 
-    const { cartItems, foodlist, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
+    const { cartItems, foodlist, removeFromCart, getTotalCartAmount, backendUrl} = useContext(StoreContext);
 
     const { isLoading, ...rest } = useContext(StoreContext);
 
@@ -27,29 +27,14 @@ const Cart = () => {
                 </div>
                 <br />
                 <hr />
-                {/* {foodlist.map((item, index) => {
-                    console.log("Cart items:", item); // Or whatever array you're mapping
-
-                    if (cartItems[item._id] > 0) {
-                        return (
-                            <div className="cart-items-title cart-items-item">
-                                <img src={url+"/images/"+item.image} alt="" />
-                                <p>{item.name}</p>
-                                <p>${item.price}</p>
-                                <p>{cartItems[item._id]}</p>
-                                <p>${item.price*cartItems[item._id]}</p>
-                                <p onClick={()=>removeFromCart(item._id)} className='cross'>x</p>
-                            </div>
-                        )
-                    }
-                })} */}
+              
                 {foodlist && foodlist.length > 0 && foodlist.map((item) => {
                     if (!item || !item._id || !cartItems[item._id]) return null; // Skip undefined or malformed items
 
                     if (cartItems[item._id] > 0) {
                         return (
                             <div className="cart-items-title cart-items-item" key={item._id}>
-                                <img src={url + "/images/" + item.image} alt={item.name} />
+                                <img src={backendUrl + "/images/" + item.image} alt={item.name} />
                                 <p>{item.name}</p>
                                 <p>${item.price}</p>
                                 <p>{cartItems[item._id]}</p>
