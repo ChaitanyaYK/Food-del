@@ -4,7 +4,7 @@ import User from "../models/userModel.js";
 const addToCart = async (req , res)=>{
     try {
         const userId = req.user._id;
-        const { itemId } = req.body;
+        const itemId = req.body;
         const userData = await User.findById(userId);
         let cartData = await userData.cartData;
         if (!cartData) cartData = {};
@@ -30,7 +30,7 @@ const addToCart = async (req , res)=>{
 const removeFromCart = async (req,res)=>{
     try {
         const userId = req.user._id;
-        const { itemId } = req.body;
+        const itemId = req.body;
         const userData = await User.findById(userId);
         const cartData = await userData.cartData;
         if (cartData[itemId]>0) {
@@ -47,7 +47,7 @@ const removeFromCart = async (req,res)=>{
 // fetch user cart data 
 const getCart = async (req,res)=>{
     try {
-        const {userId} = req.user._id;
+        const userId = req.user._id;
         const userData = await User.findById(userId);
         const cartData = await userData.cartData;
         res.status(200).json({success:true, cartData, message: "User cart Data "})

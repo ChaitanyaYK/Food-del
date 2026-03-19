@@ -8,11 +8,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const placeOrder = async (req, res) => {
     const userId = req.user._id;
     const { items, amount, address } = req.body;
-    const frontend_url = "http://localhost:5173";
+    const frontend_url = "http://localhost:5173" || process.env.FRONTEND_SERVER_URL;
 
     try {
         if (!userId || !items || !amount || !address) {
-            res.status(400).json({ success: false, message: "Missing required fields" });
+            res.status(400).json({ success: false, message: "All fields required" });
         }
         const newOrder = await Order.create({
             userId: userId,

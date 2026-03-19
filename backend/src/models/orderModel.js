@@ -2,32 +2,32 @@ import mongoose from "mongoose"
 
 const orderSchema = new mongoose.Schema({
     userId: {
-        type:String, 
-        required:true
+        type: String, 
+        required: true
     },
     items:{
-        type:Array, 
-        required:true
+        type: Array, 
+        required: true
     },
     amount:{
-        type:Number, 
-        required:true
+        type: Number, 
+        required: true
     },
     address:{
-        type:Object, 
-        required:true
+        type: Object, 
+        required: true
     },
     status:{
-        type:String, 
-        default:"Food Processing"
+        type: String, 
+        default: "Food Processing"
     },
     date:{
-        type:Date, 
-        default:Date.now()
+        type: Date, 
+        default: Date.now()
     },
     payment:{
-        type:Boolean, 
-        default:false
+        type: Boolean, 
+        default: false
     }
 })
 const Order = mongoose.models.order || mongoose.model("Order",orderSchema);

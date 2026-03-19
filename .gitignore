@@ -12,3 +12,4 @@ frontend/node_modules/*
 admin/.env
 admin/node_modules
 admin/node_modules/*
+backend/.env
